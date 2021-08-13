@@ -4,7 +4,7 @@ export const datePicked = (startDate, endDate, newDate, startMode, smartMode) =>
   if (startMode) {
     return newDateStartMode(newDate, endDate, smartMode, startDate);
   } else {
-    return newDateEndMode(newDate, startDate, smartMode, endDate);
+     return newDateEndMode(newDate, startDate, smartMode, endDate);
   }
 };
 
@@ -34,7 +34,7 @@ const newDateEndMode = (newDate, startDate, smartMode, endDate) => {
     newStart.subtract(1, 'days');
     return returnDateObject(newStart, newDate);
   } else {
-    return returnDateObject(startDate, endDate);
+    return returnDateObject(startDate, newDate);
   }
 };
 

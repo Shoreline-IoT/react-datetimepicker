@@ -26,6 +26,7 @@ class DatePicker extends React.Component {
           autoApply={this.props.autoApply}
           standalone={this.props.standalone}
           disabled={this.props.errorMessage}
+          disableApply={this.props.disableApply}
         />
       );
     }
@@ -115,5 +116,6 @@ DatePicker.propTypes = {
   standalone: PropTypes.bool,
   twelveHoursClock: PropTypes.bool,
   errorMessage: PropTypes.string,
+  disableApply: PropTypes.bool,
 };
 export default DatePicker;

@@ -109,9 +109,8 @@ class ApplyCancelButtons extends React.Component {
       styleLocal = addFocusStyle(this.state.cancelFocus, style);
     }
     return (
-      <div
+      <button
         className={className}
-        role="button"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onClick={onClick}
@@ -120,9 +119,11 @@ class ApplyCancelButtons extends React.Component {
         tabIndex={0}
         onFocus={onFocus}
         onBlur={onBlur}
+        //disabled={text === 'Apply' && this.props.disableApply}
+        hidden ={text === 'Apply' && this.props.disableApply}
       >
         {text}
-      </div>
+      </button>
     );
   }
 
@@ -197,5 +198,6 @@ ApplyCancelButtons.propTypes = {
   autoApply: PropTypes.bool,
   standalone: PropTypes.bool,
   disabled: PropTypes.string,
+  disableApply: PropTypes.bool,
 };
 export default ApplyCancelButtons;
