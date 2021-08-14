@@ -51,6 +51,8 @@ class DateTimeRangePicker extends React.Component {
       momentFormat: localMomentFormat,
       errorMessage: errorMessages.DEFAULT,
       disableApply: false,
+      dateChange: false,
+      timeChange: false,
     };
     this.bindToFunctions();
   }
@@ -83,6 +85,7 @@ class DateTimeRangePicker extends React.Component {
       this.updateStartEndAndLabels(this.props.start, this.props.end, true)
     )
     }
+    //this.setState({ disableApply: this.dateChange && this.timeChange });
   }
 
   applyCallback() {
@@ -193,7 +196,7 @@ class DateTimeRangePicker extends React.Component {
     let endDate = newDates.endDate;
     let newStart = this.duplicateMomentTimeFromState(startDate, true);
     let newEnd = this.duplicateMomentTimeFromState(endDate, false);
-    this.setState({ disableApply: newStart.isAfter(newEnd, 'seconds') });
+    this.setState({ dateChange: newStart.isAfter(newEnd, 'seconds') });
     this.updateStartEndAndLabels(newStart, newEnd);
     this.setToRangeValue(newStart, newEnd);
     // If Smart Mode is active change the selecting mode to opposite of what was just pressed
@@ -203,6 +206,7 @@ class DateTimeRangePicker extends React.Component {
       }));
     }
     this.checkAutoApplyActiveApplyIfActive(newStart, newEnd);
+    this.setState({ disableApply: newStart.isAfter(newEnd, 'seconds') });
   }
 
   changeSelectingModeCallback(selectingModeFromParam) {
@@ -223,12 +227,32 @@ class DateTimeRangePicker extends React.Component {
   }
 
   timeChangeCallback(newHour, newMinute, mode) {
+    console.log('last ', newHour , newMinute, mode);
+    let startNewHour = 0;
+    let startNewMinute = 0;
+    let endNewHour = 0;
+    let endNewMinute = 0;
+    let isValidTime = false;
     if (mode === 'start') {
+      startNewHour = newHour;
+      startNewMinute = newMinute;
       this.updateStartTime(newHour, newMinute, mode);
     } else if (mode === 'end') {
+      endNewHour = newHour;
+      endNewMinute = newMinute;
       this.updateEndTime(newHour, newMinute, mode);
     }
+    if(startNewHour > endNewHour && startNewMinute > endNewMinute){
+      //this.setState({ timeChange: true ,});
+      isValidTime = true;
+    }
+    else{
+     // this.setState({ timeChange: false, });
+     isValidTime = false;
+          }
+       this.setState({ disableApply: this.dateChange && isValidTime});
   }
+
 
   updateStartTime(newHour, newMinute, mode) {
     this.updateTime(this.state.start, newHour, newMinute, mode, 'start', 'startLabel');
