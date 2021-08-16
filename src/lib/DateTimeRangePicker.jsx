@@ -29,6 +29,7 @@ class DateTimeRangePicker extends React.Component {
       MAX_DURATION: `Date range should not exceed ${this.props.maxDuration} days`,
       MIN_DURATION: 'Min Duration cannot be less than 1 day',
       DEFAULT: '',
+      VALID_DURATION: 'Please select valid Range',
     };
     // Make a variable available to the class functions.
     this.errorMessages = errorMessages;
@@ -206,6 +207,9 @@ class DateTimeRangePicker extends React.Component {
     }
     this.checkAutoApplyActiveApplyIfActive(newStart, newEnd);
     this.setState({ disableApply: newStart.isAfter(newEnd, 'seconds') });
+   if(newStart.isAfter(newEnd, 'seconds')) {
+      this.setState({ errorMessage: this.errorMessages.VALID_DURATION });
+    }
   }
 
   changeSelectingModeCallback(selectingModeFromParam) {
@@ -226,28 +230,25 @@ class DateTimeRangePicker extends React.Component {
   }
 
   timeChangeCallback(newHour, newMinute, mode) {
-    let startNewHour = 0;
-    let startNewMinute = 0;
-    let endNewHour = 0;
-    let endNewMinute = 0;
     let isValidTime = false;
+    let startNewHour = this.state.start;
+    let date = moment(startNewHour);
+    date.hours(newHour);
+    date.minutes(newMinute);
     if (mode === 'start') {
-      startNewHour = newHour;
-      startNewMinute = newMinute;
       this.updateStartTime(newHour, newMinute, mode);
     } else if (mode === 'end') {
-      endNewHour = newHour;
-      endNewMinute = newMinute;
-      this.updateEndTime(newHour, newMinute, mode);
-    }
-      if(this.state.start.isAfter(this.state.end, 'seconds'))
-      {
+     
+      if (startNewHour.isAfter(date, 'seconds')) {
+        this.setState({ errorMessage: this.errorMessages.VALID_DURATION });
         isValidTime = true;
       }
     else{
     isValidTime = false;
     }
-    this.setState({ disableApply: this.state.dateChange && isValidTime});
+      this.updateEndTime(newHour, newMinute, mode);
+    }
+    this.setState({ disableApply: this.state.dateChange && isValidTime });
   }
 
 

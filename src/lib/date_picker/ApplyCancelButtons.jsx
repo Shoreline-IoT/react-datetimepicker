@@ -119,8 +119,6 @@ class ApplyCancelButtons extends React.Component {
         tabIndex={0}
         onFocus={onFocus}
         onBlur={onBlur}
-        //disabled={text === 'Apply' && this.props.disableApply}
-        hidden ={text === 'Apply' && this.props.disableApply}
       >
         {text}
       </button>
@@ -143,7 +141,7 @@ class ApplyCancelButtons extends React.Component {
     let closeButtonText = (this.props.local && this.props.local.close) ? this.props.local.close : 'Close';
     if (!this.props.autoApply) {
       applyButton = this.renderButton(
-        `buttonSeperator ${this.props.disabled ? 'buttonDisabled' : 'applyButton'}`,
+        `buttonSeperator ${this.props.disabled || this.props.disableApply ? 'buttonDisabled' : 'applyButton'}`,
         this.mouseEnterApply,
         this.mouseLeaveApply,
         this.applyPressed,
