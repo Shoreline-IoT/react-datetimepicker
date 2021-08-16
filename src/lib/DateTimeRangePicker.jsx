@@ -85,7 +85,6 @@ class DateTimeRangePicker extends React.Component {
       this.updateStartEndAndLabels(this.props.start, this.props.end, true)
     )
     }
-    //this.setState({ disableApply: this.dateChange && this.timeChange });
   }
 
   applyCallback() {
@@ -227,7 +226,6 @@ class DateTimeRangePicker extends React.Component {
   }
 
   timeChangeCallback(newHour, newMinute, mode) {
-    console.log('last ', newHour , newMinute, mode);
     let startNewHour = 0;
     let startNewMinute = 0;
     let endNewHour = 0;
@@ -242,15 +240,14 @@ class DateTimeRangePicker extends React.Component {
       endNewMinute = newMinute;
       this.updateEndTime(newHour, newMinute, mode);
     }
-    if(startNewHour > endNewHour && startNewMinute > endNewMinute){
-      //this.setState({ timeChange: true ,});
-      isValidTime = true;
-    }
+      if(this.state.start.isAfter(this.state.end, 'seconds'))
+      {
+        isValidTime = true;
+      }
     else{
-     // this.setState({ timeChange: false, });
-     isValidTime = false;
-          }
-       this.setState({ disableApply: this.dateChange && isValidTime});
+    isValidTime = false;
+    }
+    this.setState({ disableApply: this.state.dateChange && isValidTime});
   }
 
 
