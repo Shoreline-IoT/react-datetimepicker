@@ -103,13 +103,13 @@ class DateTimeRangePicker extends React.Component {
     // If Past Max Date Dont allow update
     let start;
     let end;
-    // if (value !== 'Custom Range') {
-    //   start = this.state.ranges[value][0];
-    //   end = this.state.ranges[value][1];
-    //   if (pastMaxDate(start, this.props.maxDate, true) || pastMaxDate(end, this.props.maxDate, true)) {
-    //     return false;
-    //   }
-    // }
+    if (value !== 'Custom Range') {
+      start = this.state.ranges[value][0];
+      end = this.state.ranges[value][1];
+      if (pastMaxDate(start, this.props.maxDate, true) || pastMaxDate(end, this.props.maxDate, true)) {
+        return false;
+      }
+    }
     // Else update state to new selected index and update start and end time
     this.setState({ selectedRange: index });
     if (value !== 'Custom Range') {
