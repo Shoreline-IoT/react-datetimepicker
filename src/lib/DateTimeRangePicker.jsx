@@ -102,7 +102,6 @@ class DateTimeRangePicker extends React.Component {
 
   customRangeCallback() {
     this.setState({ showRange: true });
-    this.props.resize(true);
   }
 
   rangeSelectedCallback(index, value) {
@@ -122,7 +121,7 @@ class DateTimeRangePicker extends React.Component {
       this.updateStartEndAndLabels(start, end);
     }
     if (this.props.rangeCallback) {
-      this.props.rangeCallback(start, end);
+      this.props.rangeCallback(index, value);
     }
 
     if (value !== 'Custom Range') {
@@ -130,7 +129,6 @@ class DateTimeRangePicker extends React.Component {
     }
     if (value === 'Custom Range') {
       this.setState({ showRange: false });
-      this.props.resize(false);
     }
   }
 
@@ -567,7 +565,6 @@ class DateTimeRangePicker extends React.Component {
 
 DateTimeRangePicker.propTypes = {
   ranges: PropTypes.object.isRequired,
-  resize: PropTypes.func,
   start: momentPropTypes.momentObj.isRequired,
   end: momentPropTypes.momentObj.isRequired,
   local: PropTypes.object.isRequired,
