@@ -58,7 +58,8 @@ export const pastMaxDate = (currentDate, maxDate, minuteMode) => {
   if (!maxDate) {
     return false;
   }
-  if (minuteMode && maxDate && currentDate.isAfter(maxDate, 'seconds')) {
+  // Replace 'seconds' with 'minutes' to avoid minor seconds difference
+  if (minuteMode && maxDate && currentDate.isAfter(maxDate, 'minutes')) {
     return true;
   }
   if (maxDate && currentDate.isAfter(maxDate, 'day')) {

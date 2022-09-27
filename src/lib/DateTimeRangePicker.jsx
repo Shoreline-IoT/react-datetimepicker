@@ -123,6 +123,10 @@ class DateTimeRangePicker extends React.Component {
     }
     if (this.props.rangeCallback) {
       this.props.rangeCallback(start, end);
+      // Change calendar state if start is undefined that is custom range selected
+      if (start) {
+        this.props.changeVisibleState();
+      }
     }
 
     if (value !== 'Custom Range') {
