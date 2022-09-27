@@ -50,7 +50,9 @@ class Ranges extends React.Component {
   }
 
   setFocusedCallback(index, focusedInput) {
-    // Set the focus value of indexed item, focusedInput is true or false
+    /**  Set the focus value of indexed item, focusedInput is true or false
+     *   Focuse custom range value
+    */
     let focused = [];
     let ranges = Object.keys(this.props.ranges).map(
       key => this.props.ranges[key],

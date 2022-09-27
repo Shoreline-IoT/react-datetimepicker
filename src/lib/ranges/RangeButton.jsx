@@ -29,7 +29,7 @@ class RangeButton extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.props !== prevProps) {
       let focused = this.props.focused[this.props.index];
-     //Add focuse to selected range
+     // Add focuse to selected range
       if (focused) {
         this.setRangeSelectedStyle();
       } else {
@@ -145,6 +145,8 @@ class RangeButton extends React.Component {
           this.button = button;
         }}
         id={"rangeButton" + this.props.index}
+        /**  removed onMouseEnter and onMouseLeave as we are
+         changing calender state when range is selected */
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         tabIndex={tabIndex}
