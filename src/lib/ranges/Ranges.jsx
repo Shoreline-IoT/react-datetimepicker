@@ -11,9 +11,11 @@ class Ranges extends React.Component {
     let ranges = Object.keys(this.props.ranges).map(
       key => this.props.ranges[key],
     );
-    for (let i = 0; i < ranges.length; i++) {
+    //select 'custom range' as default
+    for (let i = 0; i < ranges.length -1; i++) {
       focused.push(false);
     }
+    focused.push(true);
 
     this.state = {
       viewingIndex: this.props.selectedRange,
@@ -49,8 +51,14 @@ class Ranges extends React.Component {
 
   setFocusedCallback(index, focusedInput) {
     // Set the focus value of indexed item, focusedInput is true or false
-    let focused = this.state.focused;
-    focused[index] = focusedInput;
+    let focused = [];
+    let ranges = Object.keys(this.props.ranges).map(
+      key => this.props.ranges[key],
+    );
+    for (let i = 0; i < ranges.length -1; i++) {
+      focused.push(false);
+    }
+    focused.push(true);
     this.setState({
       focused: focused,
     });

@@ -123,6 +123,9 @@ class DateTimeRangePicker extends React.Component {
     }
     if (this.props.rangeCallback) {
       this.props.rangeCallback(start, end);
+      if (start) {
+        this.props.changeVisibleState();
+      }
     }
 
     if (value !== 'Custom Range') {
