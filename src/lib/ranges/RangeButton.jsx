@@ -28,8 +28,8 @@ class RangeButton extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props !== prevProps) {
-      let focused = this.props.focused[this.props.index];
-     // Add focuse to selected range
+      // Add focuse to focused index or selected range
+      let focused = this.props.focused[this.props.index] || this.props.index === this.props.selectedRange;
       if (focused) {
         this.setRangeSelectedStyle();
       } else {

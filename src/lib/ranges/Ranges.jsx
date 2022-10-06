@@ -11,11 +11,9 @@ class Ranges extends React.Component {
     let ranges = Object.keys(this.props.ranges).map(
       key => this.props.ranges[key],
     );
-    //select 'custom range' as default
-    for (let i = 0; i < ranges.length -1; i++) {
+    for (let i = 0; i < ranges.length; i++) {
       focused.push(false);
     }
-    focused.push(true);
 
     this.state = {
       viewingIndex: this.props.selectedRange,
