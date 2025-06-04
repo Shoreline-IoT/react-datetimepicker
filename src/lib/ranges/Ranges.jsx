@@ -47,18 +47,27 @@ class Ranges extends React.Component {
     }
   }
 
+  /**
+   * Set the focus value of indexed item, focusedInput is true or false
+   * Focuses the specified range index instead of always focusing Custom Range
+   * @param {number} index - The index of the range to focus
+   * @param {boolean} focusedInput - Whether the item should be focused
+   * @author dilip.yadav@shorelineiot.com
+   */
   setFocusedCallback(index, focusedInput) {
-    /**  Set the focus value of indexed item, focusedInput is true or false
-     *   Focuse custom range value
-    */
     let focused = [];
-    let ranges = Object.keys(this.props.ranges).map(
-      key => this.props.ranges[key],
-    );
-    for (let i = 0; i < ranges.length -1; i++) {
+    let ranges = Object.keys(this.props.ranges).map(key => this.props.ranges[key]);
+    
+    // Initialize all ranges as not focused
+    for (let i = 0; i < ranges.length; i++) {
       focused.push(false);
     }
-    focused.push(true);
+    
+    // Set the specific index as focused only if focusedInput is true
+    if (focusedInput && index >= 0 && index < ranges.length) {
+      focused[index] = true;
+    }
+    
     this.setState({
       focused: focused,
     });

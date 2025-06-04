@@ -105,8 +105,15 @@ class DateTimeRangePicker extends React.Component {
     this.props.resize(true);
   }
 
+  /**
+   * Callback function when a range is selected from the ranges list
+   * Handles both predefined ranges and custom range selection
+   * @param {number} index - The index of the selected range
+   * @param {string} value - The value/key of the selected range
+   * @author dilip.yadav@shorelineiot.com
+   */
   rangeSelectedCallback(index, value) {
-    // If Past Max Date Dont allow update
+    // If Past Max Date Don't allow update
     let start;
     let end;
     if (value !== 'Custom Range') {
@@ -116,25 +123,40 @@ class DateTimeRangePicker extends React.Component {
         return false;
       }
     }
-    // Else update state to new selected index and update start and end time
-    this.setState({ selectedRange: index });
+    
+    // Update state to new selected index and update start and end time
+    // Force re-render by using callback to ensure shouldShowCalendar is called
+    this.setState({ selectedRange: index }, () => {
+      // This callback ensures the component re-renders with the new selectedRange
+    });
+    
     if (value !== 'Custom Range') {
       this.updateStartEndAndLabels(start, end);
     }
+    
+    // Handle range callback
     if (this.props.rangeCallback) {
       this.props.rangeCallback(start, end);
-      // Change calendar state if start is undefined that is custom range selected
-      if (start) {
+      
+      // Only close the picker if alwaysShowCalendars is not false
+      // When alwaysShowCalendars is false, we want to keep the picker open 
+      // but hide the calendar for predefined ranges
+      if (start && this.props.alwaysShowCalendars !== false) {
         this.props.changeVisibleState();
       }
     }
 
+    // Auto-apply if enabled and not custom range
     if (value !== 'Custom Range') {
       this.checkAutoApplyActiveApplyIfActive(start, end);
     }
+    
+    // Handle custom range selection - Keep range dropdown visible for better UX
+    // Users can easily switch between predefined ranges and custom selection
     if (value === 'Custom Range') {
-      this.setState({ showRange: false });
-      this.props.resize(false);
+      // Keep showRange as true to maintain range dropdown visibility
+      // Only resize the component to accommodate the calendar view
+      this.props.resize(true);
     }
   }
 
@@ -548,7 +570,38 @@ class DateTimeRangePicker extends React.Component {
     );
   }
 
+  /**
+   * Determines if the calendar should be shown
+   * Based on alwaysShowCalendars prop and current selection
+   * @returns {boolean} - Whether to show the calendar pickers
+   * @author dilip.yadav@shorelineiot.com
+   */
+  shouldShowCalendar() {
+    // If alwaysShowCalendars is true, always show calendar regardless of range selection
+    if (this.props.alwaysShowCalendars === true) {
+      return true;
+    }
+    
+    // If alwaysShowCalendars is false and ranges are available, 
+    // show calendar only when Custom Range is selected
+    if (this.props.alwaysShowCalendars === false && this.state.ranges) {
+      const rangeKeys = Object.keys(this.state.ranges);
+      const currentRangeKey = rangeKeys[this.state.selectedRange];
+      const currentRangeValue = this.state.ranges[currentRangeKey];
+      
+      // Show calendar only for Custom Range, hide for predefined ranges
+      const isCustomRange = currentRangeValue === 'Custom Range';
+      return isCustomRange;
+    }
+    
+    // Default behavior when alwaysShowCalendars is undefined - always show calendar
+    return true;
+  }
+
   render() {
+    // Determine if calendar should be displayed based on alwaysShowCalendars prop
+    const showCalendar = this.shouldShowCalendar();
+
     return (
       <Fragment>
         {this.state.showRange && (
@@ -562,8 +615,16 @@ class DateTimeRangePicker extends React.Component {
             forceMobileMode={this.props.forceMobileMode}
           />
         )}
-        {!this.state.showRange && this.renderStartDate(this.props.local)}
-        {!this.state.showRange && this.renderEndDate(this.props.local)}
+        <div
+          key="calendar-container"
+          style={{
+            display: showCalendar ? 'flex' : 'none',
+            flex: '1'
+          }}
+        >
+          {this.renderStartDate(this.props.local)}
+          {this.renderEndDate(this.props.local)}
+        </div>
       </Fragment>
     );
   }
@@ -592,6 +653,7 @@ DateTimeRangePicker.propTypes = {
   standalone: PropTypes.bool,
   twelveHoursClock: PropTypes.bool,
   maxDuration: PropTypes.number,
+  alwaysShowCalendars: PropTypes.bool,
 };
 
 export { DateTimeRangePicker };

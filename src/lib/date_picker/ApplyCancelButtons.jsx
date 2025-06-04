@@ -121,6 +121,26 @@ class ApplyCancelButtons extends React.Component {
     }
   }
 
+  /**
+   * Determines if the back button should be displayed
+   * Only shows back button when actually needed for navigation
+   * @returns {boolean} - Whether to show the back button
+   * @author dilip.yadav@shorelineiot.com
+   */
+  shouldShowBackButton() {
+    // Check if we're in a mobile environment with space constraints
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    
+    // Check if explicitly requested via props (for backward compatibility)
+    const explicitlyRequested = this.props.showBackButton === true;
+    
+    // Check if ranges are hidden (edge case where back button is still needed)
+    const rangesHidden = this.props.rangesHidden === true;
+    
+    // Only show back button if there's a genuine need for it
+    return isMobile || explicitlyRequested || rangesHidden;
+  }
+
   renderButtons() {
     let applyButton;
     let closeButtonText = this.props.local && this.props.local.close ? this.props.local.close : 'Close';
@@ -139,12 +159,16 @@ class ApplyCancelButtons extends React.Component {
       { backgroundColor: this.state.hoverColourCancel },
       closeButtonText,
     );
-    const backButton = this.renderButton(
+    
+    // Smart conditional rendering - only show back button when needed
+    const needsBackButton = this.shouldShowBackButton();
+    const backButton = needsBackButton ? this.renderButton(
       'buttonSeperator backButton',
       this.backPressed,
       { backgroundColor: this.state.hoverColourCancel },
       'Back',
-    );
+    ) : null;
+    
     return (
       <Fragment>
         {backButton}
@@ -179,5 +203,7 @@ ApplyCancelButtons.propTypes = {
   autoApply: PropTypes.bool,
   standalone: PropTypes.bool,
   disabled: PropTypes.string,
+  showBackButton: PropTypes.bool,
+  rangesHidden: PropTypes.bool,
 };
 export default ApplyCancelButtons;

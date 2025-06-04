@@ -52,8 +52,6 @@ class Wrapper extends React.Component {
     if (firefoxBelow35) {
       disabled = false;
     }
-    console.log('start: ', this.state.start);
-    console.log('end: ', this.state.end);
     return (
       <div>
         <div onClick={this.onClick}>Click Me to test the smart mode picker</div>
@@ -69,6 +67,7 @@ class Wrapper extends React.Component {
           rangeCallback={this.rangeCallback}
           smartMode
           maxDuration={this.maxDuration}
+          alwaysShowCalendars={false}
         >
           <FormControl
             id="formControlsTextB"
@@ -76,7 +75,7 @@ class Wrapper extends React.Component {
             label="Text"
             placeholder="Enter text"
             style={{ cursor: 'pointer' }}
-            disabled={disabled}
+            disabled={false}
             value={value}
           />
         </DateTimeRangeContainer>

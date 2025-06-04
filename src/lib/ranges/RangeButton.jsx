@@ -26,11 +26,25 @@ class RangeButton extends React.Component {
     this.keyDown = this.keyDown.bind(this);
   }
 
+  /**
+   * Component lifecycle method to update button styling based on selection and focus
+   * Ensures only the selected range is highlighted, following React best practices
+   * @param {object} prevProps - Previous props for comparison
+   * @param {object} prevState - Previous state for comparison
+   * @author dilip.yadav@shorelineiot.com
+   */
   componentDidUpdate(prevProps, prevState) {
     if (this.props !== prevProps) {
-      // Add focuse to focused index or selected range
-      let focused = this.props.focused[this.props.index] || this.props.index === this.props.selectedRange;
-      if (focused) {
+      // Only highlight if this is the actually selected range
+      // Focus state should not override selection highlighting
+      let isSelected = this.props.index === this.props.selectedRange;
+      let isFocused = this.props.focused[this.props.index];
+      
+      // Apply selected style only for the selected range, or focused style for focused range
+      if (isSelected) {
+        this.setRangeSelectedStyle();
+      } else if (isFocused) {
+        // Only apply focus style if not selected (to avoid double highlighting)
         this.setRangeSelectedStyle();
       } else {
         this.setRangeButtonStyle();
