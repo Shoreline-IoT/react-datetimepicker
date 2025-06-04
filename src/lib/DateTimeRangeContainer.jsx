@@ -165,6 +165,7 @@ class DateTimeRangeContainer extends React.Component {
         standalone={this.props.standalone}
         twelveHoursClock={this.props.twelveHoursClock == true}
         maxDuration={this.props.maxDuration}
+        alwaysShowCalendars={this.props.alwaysShowCalendars}
       />
     );
   }
@@ -230,6 +231,7 @@ DateTimeRangeContainer.propTypes = {
   standalone: PropTypes.bool,
   twelveHoursClock: PropTypes.bool,
   maxDuration: PropTypes.number, // maxDuration should be number of maximum 'days'
+  alwaysShowCalendars: PropTypes.bool
 };
 
 export default DateTimeRangeContainer;
